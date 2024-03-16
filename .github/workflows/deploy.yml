@@ -23,7 +23,7 @@ jobs:
             # Replace 'your_project_directory' with the actual directory on VM
             # cd github.com/Omkardhurjad/helloBackendAPI
             # Assuming Node.js and PM2 are installed on the VM
-            node index.js
+            pm2 start index.js
 
       - name: Verify Deployment (Optional)
-        run: ssh azureuser@$20.55.97.67 -p 80 
+        run: ssh azureuser@$20.55.97.67 -p 80 "pm2 list"
