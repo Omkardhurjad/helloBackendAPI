@@ -14,6 +14,7 @@ jobs:
         run: |
           npm install
           npm install -g pm2
+          ssh azureuser@$20.55.97.67 -p 80 "mkdir -p Omkardhurjad/helloBackendAPI"
 
       - name: Deploy to VM
         uses: appleboy/ssh-action@v1.0.3
@@ -22,8 +23,8 @@ jobs:
           username: azureuser
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Replace 'your_project_directory' with the actual directory on VM
-            cd Omkardhurjad/helloBackendAPI
+            # Change to the project directory
+            ssh azureuser@$20.55.97.67 -p 80 "cd Omkardhurjad/helloBackendAPI"
             pwd # print the current working directory to confirm if the cd command is successful
             # Assuming Node.js and PM2 are installed on the VM
             pm2 start index.js
