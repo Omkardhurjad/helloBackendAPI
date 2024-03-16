@@ -26,4 +26,4 @@ jobs:
             pm2 start index.js
 
       - name: Verify Deployment (Optional)
-        run: ssh azureuser@$20.55.97.67 -p 22 "pm2 list"
+        run: ssh azureuser@$20.55.97.67 -p 80 "pm2 list"
