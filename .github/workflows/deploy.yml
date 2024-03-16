@@ -26,4 +26,4 @@ jobs:
             pm2 start index.js
 
       - name: Verify Deployment (Optional)
-        run: ssh ${{ secrets.VM_USERNAME }}@${{ secrets.HOST }} -p 22 "pm2 list"
+        run: ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST }} -p 22 "pm2 list"
