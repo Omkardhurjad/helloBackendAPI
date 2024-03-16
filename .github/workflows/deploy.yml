@@ -18,7 +18,7 @@ jobs:
         with:
           host: 20.55.97.67
           username: azureuser
-          key: ${{ secrets.VM_PRIVATE_KEY }}
+          key: 3072
           script: |
             # Replace 'your_project_directory' with the actual directory on VM
             # cd github.com/Omkardhurjad/helloBackendAPI
