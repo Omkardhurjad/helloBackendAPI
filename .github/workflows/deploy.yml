@@ -15,12 +15,12 @@ jobs:
 
       - name: Search for Project Directory (Limited Access - Optional)
         run: |
-          ssh ${{ secrets.VM_USERNAME }}@${{ secrets.HOST }} -p 22 "find / -name 'package.json'"
+          ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST }} -p 22 "find / -name 'package.json'"
       - name: Deploy to VM (Modify path based on search results)
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
-          username: ${{ secrets.VM_USERNAME }}
+          username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.VM_PRIVATE_KEY }}
           script: |
             # Assuming search reveals project directory (modify path)
@@ -29,10 +29,10 @@ jobs:
             pm2 start index.js
 
       - name: Verify Deployment (Optional - Separate Steps)
-        run: ssh ${{ secrets.VM_USERNAME }}@${{ secrets.HOST }} -p 22
+        run: ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST }} -p 22
       - name: Check Running Processes (Optional)
         run: pm2 list
 
 # Optionally use a secret for verification command (uncomment below)
 # - name: Verify Deployment (Optional - Secret)
-#   run: ssh ${{ secrets.VM_USERNAME }}@${{ secrets.HOST }} -p 22 ${{ secrets.VM_VERIFY_COMMAND }}
+#   run: ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST }} -p 22 ${{ secrets.VM_VERIFY_COMMAND }}
