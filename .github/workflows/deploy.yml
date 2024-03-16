@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: npm install
+        run: npm install  # Assuming your project uses npm
 
       - name: Deploy to VM
         uses: appleboy/ssh-action@v1.0.3
@@ -20,10 +20,25 @@ jobs:
           username: azureuser
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Replace 'your_project_directory' with the actual directory on VM
-            # cd github.com/Omkardhurjad/helloBackendAPI
-            # Assuming Node.js and PM2 are installed on the VM
-            pm2 start index.js
+            # Search for Project Directory (Limited Access)
+            project_dir=$(ssh azureuser@20.55.97.67 -p 22 "find / -name 'package.json'")
 
-      - name: Verify Deployment (Optional)
-        run: ssh azureuser@$20.55.97.67 -p 80 "pm2 list"
+            # Check if project directory was found
+            if [[ -z "$project_dir" ]]; then
+              echo "Project directory not found on VM. Deployment failed."
+              exit 1
+            fi
+
+            cd "$project_dir"
+
+            # Assuming Node.js is installed on the VM
+            # Modify the command if using a different process manager
+            npm start  # Replace with the appropriate command to start your application
+
+      - name: Verify Deployment (Optional - Process List)
+        run: ssh azureuser@20.55.97.67 -p 22 "lsof -i tcp:80"  # Using port 80 for verification
+
+      - name: Verify Deployment (Optional - Custom Command)
+        # Uncomment and replace 'your_verification_command' with your desired command
+        # This command should run on the VM and indicate successful deployment
+        # run: ssh azureuser@20.55.97.67 -p 22 "your_verification_command"
