@@ -13,26 +13,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Search for Project Directory (Limited Access - Optional)
-        run: |
-          ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST }} -p 22 "find / -name 'package.json'"
-      - name: Deploy to VM (Modify path based on search results)
+      - name: Deploy to VM
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER_NAME }}
           key: ${{ secrets.VM_PRIVATE_KEY }}
           script: |
-            # Assuming search reveals project directory (modify path)
-            cd /path/to/your/project/found/by/search  # Replace with actual path
+            # Replace 'your_project_directory' with the actual directory on VM
+            # cd github.com/Omkardhurjad/helloBackendAPI
             # Assuming Node.js and PM2 are installed on the VM
             pm2 start index.js
 
-      - name: Verify Deployment (Optional - Separate Steps)
-        run: ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST }} -p 22
-      - name: Check Running Processes (Optional)
-        run: pm2 list
-
-# Optionally use a secret for verification command (uncomment below)
-# - name: Verify Deployment (Optional - Secret)
-#   run: ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST }} -p 22 ${{ secrets.VM_VERIFY_COMMAND }}
+      - name: Verify Deployment (Optional)
+        run: ssh ${{ secrets.USER_NAME }}@${{ secrets.HOST }} -p 22 "pm2 list"
