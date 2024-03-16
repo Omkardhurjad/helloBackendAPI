@@ -13,6 +13,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install PM2 (if not available)
+        run: ssh azureuser@$20.55.97.67 -p 80 'if ! which pm2 >/dev/null; then npm install pm2 -g; fi'
+
       - name: Deploy to VM
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -20,10 +23,7 @@ jobs:
           username: azureuser
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Replace 'your_project_directory' with the actual directory on VM
-            # cd github.com/Omkardhurjad/helloBackendAPI
-            # Assuming Node.js and PM2 are installed on the VM
             pm2 start index.js
 
-      - name: Verify Deployment (Optional)
+      - name: Verify Deployment (Optional)  # Keep this step if desired
         run: ssh azureuser@$20.55.97.67 -p 80 "pm2 list"
